@@ -1,0 +1,563 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AstroMath: Misi Eksponen</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Konfigurasi MathJax untuk merender rumus matematika (LaTeX) -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+    <style>
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #050b14; color: #f8fafc; overflow-x: hidden; }
+        .space-bg { background: radial-gradient(circle at center, #1e1b4b 0%, #020617 100%); }
+        .glass-panel { background: rgba(30, 41, 59, 0.6); backdrop-filter: blur(12px); border: 1px solid rgba(139, 92, 246, 0.3); }
+        
+        /* Animasi Bintang */
+        .stars { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="400" height="400"><circle cx="20" cy="20" r="1" fill="white" opacity="0.5"/><circle cx="200" cy="80" r="1.5" fill="white" opacity="0.8"/><circle cx="350" cy="300" r="1" fill="white" opacity="0.3"/><circle cx="100" cy="250" r="2" fill="white" opacity="0.6"/></svg>') repeat; animation: twinkle 10s linear infinite; }
+        @keyframes twinkle { from { opacity: 0.8; transform: translateY(0); } to { opacity: 1; transform: translateY(-50px); } }
+        
+        .float { animation: floating 3s ease-in-out infinite; }
+        @keyframes floating { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col space-bg">
+    <div class="stars"></div>
+
+    <!-- Header Navigation -->
+    <header class="glass-panel sticky top-0 z-50 px-6 py-4 flex justify-between items-center shadow-lg border-b-violet-500/30">
+        <div class="flex items-center space-x-3">
+            <span class="text-3xl">🚀</span>
+            <div>
+                <h1 class="text-xl font-bold text-violet-400 tracking-wider">AstroMath</h1>
+                <p class="text-xs text-slate-400">Misi Eksponen (Pangkat Bulat)</p>
+            </div>
+        </div>
+        <div class="flex space-x-2">
+            <span class="px-3 py-1.5 bg-violet-900/50 text-violet-300 text-xs font-semibold rounded-full border border-violet-500/30 flex items-center space-x-2">
+                <span>⚡ Energi:</span> <span id="navScore">0</span>
+            </span>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-5xl w-full mx-auto p-4 md:p-8">
+
+        <!-- ================= 1. MOTIVASI & TUJUAN VIEW ================= -->
+        <div id="introView" class="space-y-6">
+            <div class="glass-panel p-8 md:p-12 rounded-3xl shadow-2xl text-center space-y-6 border-t border-t-violet-400/50">
+                <div class="text-6xl float">🌌</div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">Selamat Datang di Akademi AstroMath!</h2>
+                
+                <!-- Motivasi -->
+                <div class="bg-slate-900/80 p-6 rounded-2xl text-left border border-slate-700/50">
+                    <h3 class="text-lg font-bold text-fuchsia-400 flex items-center space-x-2 mb-3">
+                        <span>💡</span><span>Motivasi: Mengapa Belajar Eksponen?</span>
+                    </h3>
+                    <p class="text-slate-300 text-sm leading-relaxed">
+                        Tahukah kamu jarak dari Bumi ke Galaksi Andromeda adalah sekitar $24.000.000.000.000.000.000$ km? Bayangkan betapa repotnya ilmuwan jika harus menulis angka nol sebanyak itu setiap saat! <br><br>
+                        Dengan eksponen (bilangan berpangkat), alam semesta yang luas bisa disederhanakan. Jarak tadi cukup ditulis menjadi $2.4 \times 10^{19}$ km. Eksponen adalah <strong>bahasa alam semesta</strong>, alat bagi para astronot dan programmer untuk menghitung hal-hal super besar dan super kecil!
+                    </p>
+                </div>
+
+                <!-- Tujuan -->
+                <div class="bg-slate-900/80 p-6 rounded-2xl text-left border border-slate-700/50">
+                    <h3 class="text-lg font-bold text-violet-400 flex items-center space-x-2 mb-3">
+                        <span>🎯</span><span>Tujuan Misi Pembelajaran</span>
+                    </h3>
+                    <ul class="text-slate-300 text-sm space-y-2 list-disc list-inside">
+                        <li>Siswa mampu memahami konsep dasar bilangan berpangkat bulat.</li>
+                        <li>Siswa dapat mengidentifikasi dan menerapkan sifat perkalian dan pembagian eksponen.</li>
+                        <li>Siswa dapat menyelesaikan masalah matematika menggunakan sifat eksponen secara kreatif.</li>
+                    </ul>
+                </div>
+
+                <button onclick="playSound('click'); switchView('preQuizView')" class="px-8 py-3.5 bg-gradient-to-r from-violet-600 to-fuchsia-600 rounded-xl font-bold text-white shadow-[0_0_15px_rgba(139,92,246,0.5)] hover:scale-105 transition transform text-sm">
+                    Mulai Persiapan Peluncuran 🚀
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= 2. KUIS PEMAHAMAN AWAL ================= -->
+        <div id="preQuizView" class="hidden space-y-6 max-w-2xl mx-auto">
+            <div class="glass-panel p-8 rounded-3xl shadow-2xl space-y-6 text-center">
+                <span class="text-xs uppercase tracking-widest text-fuchsia-400 font-bold">Kuis Pemahaman Awal</span>
+                <h3 class="text-2xl font-bold text-white">Sebelum lepas landas, mari cek radar pengetahuamu!</h3>
+                <p class="text-slate-300 text-sm">Manakah penulisan bentuk pangkat yang benar untuk perkalian berulang berikut?</p>
+                
+                <div class="text-3xl font-bold text-violet-300 my-4 bg-slate-900/50 py-4 rounded-xl border border-violet-500/20">
+                    $ 3 \times 3 \times 3 \times 3 \times 3 $
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="handlePreQuiz(false)" class="p-4 bg-slate-800 hover:bg-violet-900/50 border border-slate-600 rounded-xl text-lg font-bold transition"> $ 3 \times 5 $ </button>
+                    <button onclick="handlePreQuiz(true)" class="p-4 bg-slate-800 hover:bg-violet-900/50 border border-slate-600 rounded-xl text-lg font-bold transition"> $ 3^5 $ </button>
+                    <button onclick="handlePreQuiz(false)" class="p-4 bg-slate-800 hover:bg-violet-900/50 border border-slate-600 rounded-xl text-lg font-bold transition"> $ 5^3 $ </button>
+                    <button onclick="handlePreQuiz(false)" class="p-4 bg-slate-800 hover:bg-violet-900/50 border border-slate-600 rounded-xl text-lg font-bold transition"> $ 15 $ </button>
+                </div>
+                <div id="preQuizFeedback" class="hidden p-4 rounded-xl text-sm font-bold"></div>
+                <button id="btnToMaterial" onclick="playSound('click'); switchView('materialView')" class="hidden mx-auto px-6 py-2.5 bg-violet-600 rounded-xl font-bold text-white mt-4 hover:bg-violet-500 transition">Lanjut Buka Modul Materi 📚</button>
+            </div>
+        </div>
+
+        <!-- ================= 3. MATERI LENGKAP & KESIMPULAN & REFLEKSI ================= -->
+        <div id="materialView" class="hidden space-y-6">
+            <div class="glass-panel p-8 md:p-10 rounded-3xl shadow-2xl space-y-6">
+                <div class="border-b border-violet-500/30 pb-4">
+                    <h2 class="text-2xl font-bold text-white flex items-center space-x-2">
+                        <span>📖</span><span>Modul Navigasi Eksponen</span>
+                    </h2>
+                </div>
+
+                <!-- Materi Lengkap -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-violet-500/20">
+                        <h4 class="font-bold text-fuchsia-400 mb-2">1. Konsep Dasar</h4>
+                        <p class="text-sm text-slate-300">Eksponen $a^n$ (dibaca "a pangkat n") berarti mengalikan bilangan pokok $a$ sebanyak $n$ kali.</p>
+                        <div class="bg-black/50 p-3 rounded-lg mt-2 text-center text-violet-300">
+                            $$ a^n = a \times a \times \dots \times a \text{ (sebanyak } n \text{ kali)} $$
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-violet-500/20">
+                        <h4 class="font-bold text-fuchsia-400 mb-2">2. Sifat Perkalian</h4>
+                        <p class="text-sm text-slate-300">Jika bilangan pokok sama dikalikan, maka pangkatnya **dijumlahkan**.</p>
+                        <div class="bg-black/50 p-3 rounded-lg mt-2 text-center text-emerald-300 font-bold">
+                            $$ a^m \times a^n = a^{m+n} $$
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1 text-center">Contoh: $ 2^3 \times 2^4 = 2^{3+4} = 2^7 $</p>
+                    </div>
+
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-violet-500/20">
+                        <h4 class="font-bold text-fuchsia-400 mb-2">3. Sifat Pembagian</h4>
+                        <p class="text-sm text-slate-300">Jika bilangan pokok sama dibagi, maka pangkatnya **dikurangkan**.</p>
+                        <div class="bg-black/50 p-3 rounded-lg mt-2 text-center text-emerald-300 font-bold">
+                            $$ \frac{a^m}{a^n} = a^{m-n} $$
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1 text-center">Contoh: $ \frac{5^6}{5^2} = 5^{6-2} = 5^4 $</p>
+                    </div>
+
+                    <div class="bg-slate-900/60 p-5 rounded-2xl border border-violet-500/20">
+                        <h4 class="font-bold text-fuchsia-400 mb-2">4. Pangkat Dipangkatkan</h4>
+                        <p class="text-sm text-slate-300">Jika bilangan berpangkat dipangkatkan lagi, maka pangkatnya **dikalikan**.</p>
+                        <div class="bg-black/50 p-3 rounded-lg mt-2 text-center text-emerald-300 font-bold">
+                            $$ (a^m)^n = a^{m \times n} $$
+                        </div>
+                        <p class="text-xs text-slate-400 mt-1 text-center">Contoh: $ (3^2)^4 = 3^{2 \times 4} = 3^8 $</p>
+                    </div>
+                </div>
+
+                <!-- Kesimpulan -->
+                <div class="bg-violet-900/30 p-5 rounded-2xl border border-violet-400/30 mt-6">
+                    <h3 class="text-md font-bold text-white flex items-center space-x-2 mb-2">
+                        <span>📌</span><span>Kesimpulan</span>
+                    </h3>
+                    <p class="text-sm text-slate-300">Sifat-sifat eksponen diciptakan bukan untuk menyulitkan, melainkan sebagai "jalan pintas" (shortcut). Daripada kita menghitung angka yang sangat panjang, kita cukup mengoperasikan pangkatnya saja (ditambah, dikurang, atau dikali) asalkan basis bilangannya sama.</p>
+                </div>
+
+                <!-- Refleksi -->
+                <div class="bg-slate-900/80 p-5 rounded-2xl border border-slate-600 mt-6">
+                    <h3 class="text-md font-bold text-fuchsia-400 mb-2">Pojok Refleksi 🪞</h3>
+                    <p class="text-xs text-slate-400 mb-3">Setelah membaca materi di atas, sifat eksponen manakah yang menurutmu paling mudah, dan mana yang masih membingungkan? Tuliskan pikiranmu di bawah ini sebelum memulai game!</p>
+                    <textarea class="w-full bg-slate-800 border border-slate-600 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-violet-500 placeholder-slate-500" rows="2" placeholder="Menurut saya sifat perkalian mudah dipahami, tapi..."></textarea>
+                </div>
+
+                <div class="text-center pt-4">
+                    <button onclick="playSound('click'); startMissionGame()" class="px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl font-bold text-white shadow-[0_0_15px_rgba(16,185,129,0.4)] hover:scale-105 transition transform">
+                        Mulai Game: Misi Pengisian Bahan Bakar 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= 4. GAME & SOAL AKHIR ================= -->
+        <div id="gameView" class="hidden space-y-6">
+            
+            <!-- Petunjuk Game -->
+            <div id="gameIntroCard" class="glass-panel p-8 md:p-12 rounded-3xl shadow-2xl text-center space-y-6">
+                <div class="text-7xl float">☄️</div>
+                <h2 class="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-rose-400">Hujan Meteor Eksponen!</h2>
+                <p class="text-slate-300 text-lg max-w-xl mx-auto">
+                    Pesawat kita melintasi sabuk asteroid! Selesaikan soal eksponen di radar, lalu <strong>tembak (klik/sentuh) meteor</strong> yang membawa jawaban yang benar sebelum menabrak pesawat!
+                </p>
+                <div class="bg-slate-900/50 p-4 rounded-xl inline-block text-left text-sm border border-slate-700">
+                    <ul class="space-y-2 text-slate-300">
+                        <li>✅ Tembak jawaban benar: <strong>+20 Poin</strong></li>
+                        <li>❌ Tembak salah / meteor lolos: <strong>Nyawa -1</strong></li>
+                        <li>❤️ Total Nyawa (Baja Pesawat): <strong>3</strong></li>
+                    </ul>
+                </div>
+                <div class="pt-4">
+                    <button onclick="playSound('click'); initArcadeGame()" class="px-8 py-3.5 bg-gradient-to-r from-orange-500 to-rose-600 rounded-xl font-bold text-white shadow-[0_0_15px_rgba(249,115,22,0.4)] hover:scale-105 transition transform text-lg">
+                        Mulai Pertahanan 🚀
+                    </button>
+                </div>
+            </div>
+
+            <!-- Arena Arcade (Hujan Meteor) -->
+            <div id="arcadeContainer" class="relative w-full h-[450px] md:h-[550px] bg-slate-950 rounded-3xl border-2 border-violet-500/50 overflow-hidden hidden shadow-[0_0_30px_rgba(139,92,246,0.3)]">
+                <!-- Stars overlay -->
+                <div class="stars opacity-30"></div>
+
+                <!-- HUD -->
+                <div class="absolute top-4 left-4 z-10 flex space-x-3">
+                    <div class="bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-600 text-sm text-emerald-400 font-black shadow-lg">Skor: <span id="gameScoreDisplay">0</span></div>
+                    <div class="bg-slate-900/90 px-4 py-2 rounded-xl border border-slate-600 text-sm text-rose-400 font-bold shadow-lg tracking-widest"><span id="gameHealthDisplay">❤️❤️❤️</span></div>
+                </div>
+
+                <!-- Soal / Target (Menggunakan MathJax) -->
+                <div class="absolute top-4 left-1/2 transform -translate-x-1/2 z-10 bg-slate-900/95 px-8 py-3 rounded-2xl border-2 border-fuchsia-500 shadow-[0_0_15px_rgba(217,70,239,0.4)] text-center min-w-[250px]">
+                    <span class="text-[10px] text-fuchsia-400 uppercase tracking-widest block mb-1 font-bold">Radar Target</span>
+                    <div id="gameQuestionTarget" class="text-3xl font-black text-white">...</div>
+                </div>
+
+                <!-- Meteor Field (Tempat meteor di render menggunakan JS) -->
+                <div id="meteorField" class="absolute inset-0 z-0 overflow-hidden"></div>
+
+                <!-- Pangkalan / Roket -->
+                <div class="absolute bottom-0 w-full h-24 bg-gradient-to-t from-violet-900 to-transparent flex justify-center items-end pb-2 border-t border-violet-500/20">
+                    <div class="text-6xl animate-pulse">🚀</div>
+                </div>
+            </div>
+
+            <!-- Final Result Card -->
+            <div id="resultCard" class="hidden glass-panel p-10 rounded-3xl text-center space-y-6 shadow-2xl">
+                <div id="resultEmoji" class="text-7xl float">🌠</div>
+                <h2 id="resultTitle" class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Sabuk Asteroid Terlewati!</h2>
+                <p id="resultDesc" class="text-slate-300 max-w-lg mx-auto">Selamat! Kamu berhasil melindungi pesawat dengan kemampuan perhitungan eksponenmu.</p>
+                
+                <div class="inline-block bg-slate-900 p-6 rounded-2xl border border-emerald-500/30">
+                    <span class="text-sm text-slate-400 block uppercase tracking-wider mb-2">Total Skor</span>
+                    <span id="finalScore" class="text-6xl font-black text-emerald-400">100</span>
+                </div>
+                
+                <div class="pt-4">
+                    <button onclick="location.reload()" class="px-6 py-3 bg-violet-600 hover:bg-violet-500 rounded-xl font-bold text-white transition">Kembali ke Pangkalan (Ulangi)</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Data Soal Arcade
+        // Kita menggunakan HTML <sup> untuk jawaban di meteor agar gerakan animasi jatuh sangat mulus dan cepat (tanpa render MathJax di meteor yang jatuh).
+        const arcadeQuestions = [
+            { q: "$$ 2^4 \\times 2^3 $$", options: ["2<sup>7</sup>", "2<sup>12</sup>", "4<sup>7</sup>"], correct: 0 },
+            { q: "$$ \\frac{5^8}{5^2} $$", options: ["1<sup>6</sup>", "5<sup>4</sup>", "5<sup>6</sup>"], correct: 2 },
+            { q: "$$ (3^2)^4 $$", options: ["3<sup>6</sup>", "3<sup>8</sup>", "9<sup>4</sup>"], correct: 1 },
+            { q: "$$ p^3 \\times p^5 $$", options: ["p<sup>8</sup>", "p<sup>15</sup>", "2p<sup>8</sup>"], correct: 0 },
+            { q: "$$ \\frac{m^7}{m^4} $$", options: ["m<sup>11</sup>", "m<sup>3</sup>", "1<sup>3</sup>"], correct: 1 },
+            { q: "$$ (2^3)^2 $$", options: ["2<sup>5</sup>", "2<sup>9</sup>", "2<sup>6</sup>"], correct: 2 }
+        ];
+
+        let currentArcadeQ = 0;
+        let arcadeScore = 0;
+        let arcadeHealth = 3;
+        let fallTimeout;
+        let activeMeteors = [];
+
+            <div class="glass-panel p-5 rounded-2xl shadow-xl flex justify-between items-center mb-6">
+                <div>
+                    <span class="text-xs text-slate-400 uppercase font-bold block">Status Roket</span>
+                    <span class="text-lg font-bold text-emerald-400" id="gameQuestionStatus">Soal 1 / 4</span>
+                </div>
+                <div class="w-1/2">
+                    <div class="flex justify-between text-xs text-slate-300 mb-1">
+                        <span>Tangki Bahan Bakar</span>
+                        <span id="fuelPercent">0%</span>
+                    </div>
+                    <div class="w-full bg-slate-900 h-4 rounded-full overflow-hidden p-0.5 border border-violet-500/30">
+                        <div id="fuelBar" class="bg-gradient-to-r from-orange-500 to-yellow-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <span class="text-xs text-slate-400 uppercase font-bold block">Total Poin</span>
+                    <span class="text-2xl font-black text-fuchsia-400" id="gameScoreDisplay">0</span>
+                </div>
+            </div>
+
+            <!-- Question Card -->
+            <div id="quizCard" class="glass-panel p-8 md:p-12 rounded-3xl shadow-2xl text-center space-y-6">
+                <h3 class="text-xl md:text-2xl font-bold text-white" id="gameQuestionText">Memuat soal...</h3>
+                <div id="gameOptionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+                    <!-- Options generated via JS -->
+                </div>
+                <div id="gameFeedbackMessage" class="hidden mt-6 p-4 rounded-xl text-center font-bold text-sm"></div>
+            </div>
+
+            <!-- Final Result Card -->
+            <div id="resultCard" class="hidden glass-panel p-10 rounded-3xl text-center space-y-6 shadow-2xl">
+                <div class="text-7xl float">🌠</div>
+                <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Roket Berhasil Mengorbit!</h2>
+                <p class="text-slate-300 max-w-lg mx-auto">Selamat! Kamu telah menguasai sifat-sifat dasar eksponen dan berhasil mengumpulkan energi yang cukup untuk perjalanan antar galaksi.</p>
+                
+                <div class="inline-block bg-slate-900 p-6 rounded-2xl border border-emerald-500/30">
+                    <span class="text-sm text-slate-400 block uppercase tracking-wider mb-2">Nilai Evaluasi Akhir</span>
+                    <span id="finalScore" class="text-6xl font-black text-emerald-400">100</span>
+                </div>
+                
+                <div class="pt-4">
+                    <button onclick="location.reload()" class="px-6 py-3 bg-violet-600 hover:bg-violet-500 rounded-xl font-bold text-white transition">Kembali ke Pangkalan (Ulangi)</button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // Data Soal Akhir (Game)
+        const mathQuestions = [
+            {
+                q: "Berdasarkan sifat perkalian eksponen, bentuk sederhana dari $$ 2^4 \\times 2^3 $$ adalah...",
+                options: ["$ 2^7 $", "$ 2^{12} $", "$ 4^7 $", "$ 4^{12} $"],
+                correctIndex: 0,
+                explanation: "Pangkatnya ditambahkan: $4 + 3 = 7$."
+            },
+            {
+                q: "Berapakah hasil penyederhanaan dari operasi pembagian berikut? $$ \\frac{5^8}{5^2} $$",
+                options: ["$ 1^6 $", "$ 5^4 $", "$ 5^{10} $", "$ 5^6 $"],
+                correctIndex: 3,
+                explanation: "Pangkatnya dikurangkan: $8 - 2 = 6$."
+            },
+            {
+                q: "Sebuah pesawat ruang angkasa memiliki energi sebesar $ (3^2)^4 $ Joule. Jika disederhanakan, energi tersebut sama dengan...",
+                options: ["$ 3^6 $", "$ 3^8 $", "$ 9^4 $", "$ 6^4 $"],
+                correctIndex: 1,
+                explanation: "Pangkat dipangkatkan, maka dikalikan: $2 \\times 4 = 8$."
+            },
+            {
+                q: "Operasi campuran: Bentuk sederhana dari $$ \\frac{p^3 \\times p^5}{p^2} $$ adalah...",
+                options: ["$ p^6 $", "$ p^4 $", "$ p^{10} $", "$ p^8 $"],
+                correctIndex: 0,
+                explanation: "Jumlahkan dulu yang atas ($3+5=8$), lalu kurangkan dengan yang bawah ($8-2=6$)."
+            }
+        ];
+
+        let currentQuestionIdx = 0;
+        let studentScore = 0;
+
+        // Simple Audio Engine
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain); gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(500, audioCtx.currentTime);
+                    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.1);
+                } else if (type === 'correct') {
+                    osc.frequency.setValueAtTime(659.25, audioCtx.currentTime); // E5
+                    osc.frequency.setValueAtTime(1046.50, audioCtx.currentTime + 0.1); // C6
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                } else if (type === 'wrong') {
+                    osc.frequency.setValueAtTime(300, audioCtx.currentTime);
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime + 0.2);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.4);
+                    osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+                }
+            } catch (e) {}
+        }
+
+        // Fungsi Memanggil ulang MathJax untuk merender rumus baru
+        function renderMath() {
+            if(window.MathJax) {
+                MathJax.typesetPromise().catch((err) => console.log(err));
+            }
+        }
+
+        function switchView(viewId) {
+            document.getElementById('introView').classList.add('hidden');
+            document.getElementById('preQuizView').classList.add('hidden');
+            document.getElementById('materialView').classList.add('hidden');
+            document.getElementById('gameView').classList.add('hidden');
+            
+            document.getElementById(viewId).classList.remove('hidden');
+            renderMath(); // Penting: render ulang formula setiap pindah halaman
+        }
+
+        function handlePreQuiz(isCorrect) {
+            const feedback = document.getElementById('preQuizFeedback');
+            const btnNext = document.getElementById('btnToMaterial');
+            feedback.classList.remove('hidden');
+            
+            if(isCorrect) {
+                playSound('correct');
+                feedback.className = "mt-4 p-4 rounded-xl text-sm font-bold bg-emerald-900/50 text-emerald-400 border border-emerald-500/50";
+                feedback.innerHTML = "Tepat Sekali! $3^5$ adalah bentuk pendek dari perkalian 3 sebanyak 5 kali. Sistem radar aktif! ✅";
+            } else {
+                playSound('wrong');
+                feedback.className = "mt-4 p-4 rounded-xl text-sm font-bold bg-orange-900/50 text-orange-400 border border-orange-500/50";
+                feedback.innerHTML = "Hampir! Penulisan eksponen (pangkat) yang benar adalah $3^5$. Mari pelajari lebih lanjut di modul! 🚀";
+            }
+            btnNext.classList.remove('hidden');
+            renderMath();
+        }
+
+        function startMissionGame() {
+            // Ini dipanggil oleh tombol di bagian bawah modul materi
+            switchView('gameView');
+            document.getElementById('gameIntroCard').classList.remove('hidden');
+            document.getElementById('arcadeContainer').classList.add('hidden');
+            document.getElementById('resultCard').classList.add('hidden');
+        }
+
+        function initArcadeGame() {
+            document.getElementById('gameIntroCard').classList.add('hidden');
+            document.getElementById('arcadeContainer').classList.remove('hidden');
+            currentArcadeQ = 0;
+            arcadeScore = 0;
+            arcadeHealth = 3;
+            updateArcadeHUD();
+            spawnWave();
+        }
+
+        function spawnWave() {
+            if(arcadeHealth <= 0) { finishArcade(false); return; }
+            if(currentArcadeQ >= arcadeQuestions.length) { finishArcade(true); return; }
+
+            const qData = arcadeQuestions[currentArcadeQ];
+            document.getElementById('gameQuestionTarget').innerHTML = qData.q;
+            renderMath(); // Render MathJax hanya untuk soal diam di bagian atas layar
+
+            const field = document.getElementById('meteorField');
+            field.innerHTML = '';
+            activeMeteors = [];
+
+            // Titik posisi jatuhnya meteor (kiri, tengah, kanan)
+            const positions = [10, 42, 75]; 
+            
+            // Acak urutan jawaban (array)
+            let opts = qData.options.map((opt, index) => ({ html: opt, isCorrect: index === qData.correct }));
+            opts = opts.sort(() => Math.random() - 0.5);
+
+            // Buat HTML Meteor secara dinamis
+            opts.forEach((opt, idx) => {
+                const m = document.createElement('button');
+                m.className = "absolute w-20 h-20 md:w-24 md:h-24 bg-gradient-to-b from-slate-700 to-slate-900 rounded-full border-2 border-orange-500/80 shadow-[0_0_20px_rgba(249,115,22,0.5)] flex flex-col items-center justify-center text-lg md:text-xl font-bold text-white hover:scale-110 cursor-pointer z-20 transition-all";
+                m.style.top = '-100px'; // Mulai jatuh dari luar layar atas
+                m.style.left = positions[idx] + '%';
+                m.innerHTML = `<span class="text-sm md:text-base mb-1">☄️</span><span class="leading-none">${opt.html}</span>`;
+                m.onclick = () => hitMeteor(opt.isCorrect, m);
+
+                field.appendChild(m);
+                activeMeteors.push(m);
+            });
+
+            // Mulai animasi jatuh dengan timeout sekian milidetik agar DOM siap
+            setTimeout(() => {
+                activeMeteors.forEach(m => {
+                    // Durasi waktu meteor mencapai dasar (6 detik = waktu berpikir siswa)
+                    m.style.transition = 'top 6s linear';
+                    m.style.top = '600px'; 
+                });
+            }, 50);
+
+            // Jika dalam 6 detik pemain tidak klik apapun, meteor menabrak roket
+            fallTimeout = setTimeout(() => {
+                waveFailed();
+            }, 6000);
+        }
+
+        function hitMeteor(isCorrect, element) {
+            clearTimeout(fallTimeout);
+            activeMeteors.forEach(m => { m.onclick = null; m.style.transition = 'none'; }); // Hentikan gerakan saat di klik
+
+            if(isCorrect) {
+                playSound('correct');
+                arcadeScore += 20;
+                element.innerHTML = "<span class='text-4xl'>💥</span>";
+                element.classList.replace('from-slate-700', 'from-emerald-500');
+                element.classList.replace('to-slate-900', 'to-emerald-700');
+                element.classList.replace('border-orange-500/80', 'border-emerald-400');
+            } else {
+                playSound('wrong');
+                arcadeHealth--;
+                element.innerHTML = "<span class='text-4xl'>❌</span>";
+                element.classList.replace('from-slate-700', 'from-rose-600');
+                element.classList.replace('to-slate-900', 'to-rose-900');
+                element.classList.replace('border-orange-500/80', 'border-rose-500');
+            }
+            
+            updateArcadeHUD();
+
+            // Munculkan gelombang meteor selanjutnya setelah delay singkat
+            setTimeout(() => {
+                currentArcadeQ++;
+                spawnWave();
+            }, 1000);
+        }
+
+        function waveFailed() {
+            playSound('wrong');
+            arcadeHealth--;
+            updateArcadeHUD();
+            
+            // Tampilkan animasi tabrakan di semua meteor
+            activeMeteors.forEach(m => {
+                m.onclick = null;
+                m.innerHTML = "<span class='text-4xl'>🔥</span>";
+                m.classList.replace('from-slate-700', 'from-rose-900');
+                m.classList.replace('border-orange-500/80', 'border-rose-900');
+            });
+
+            setTimeout(() => {
+                currentArcadeQ++;
+                spawnWave();
+            }, 1000);
+        }
+
+        function updateArcadeHUD() {
+            document.getElementById('gameScoreDisplay').innerText = arcadeScore;
+            document.getElementById('navScore').innerText = arcadeScore;
+            
+            let hearts = "";
+            for(let i=0; i<3; i++) {
+                hearts += i < arcadeHealth ? "❤️" : "🖤";
+            }
+            document.getElementById('gameHealthDisplay').innerText = hearts;
+        }
+
+        function finishArcade(isWin) {
+            document.getElementById('arcadeContainer').classList.add('hidden');
+            document.getElementById('resultCard').classList.remove('hidden');
+            document.getElementById('finalScore').innerText = arcadeScore;
+
+            const title = document.getElementById('resultTitle');
+            const desc = document.getElementById('resultDesc');
+            const emoji = document.getElementById('resultEmoji');
+
+            if(isWin && arcadeHealth > 0) {
+                playSound('correct');
+                emoji.innerText = "🏆";
+                title.innerText = "Sabuk Asteroid Terlewati! 🌌";
+                title.className = "text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400";
+                desc.innerText = `Luar biasa! Kamu berhasil melindungi pesawat dan mengumpulkan ${arcadeScore} energi.`;
+            } else {
+                playSound('wrong');
+                emoji.innerText = "💥";
+                title.innerText = "Pesawat Rusak Parah!";
+                title.className = "text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-500";
+                desc.innerText = "Asteroid menghantam pesawat kita. Jangan menyerah, baca lagi modulnya dan coba misi ini kembali!";
+            }
+        }
+    </script>
+</body>
+</html>
+
+```
