@@ -246,6 +246,7 @@
 
     </main>
 
+    <!-- Hapus HTML rusak yang sebelumnya mengganggu blok Javascript -->
     <script>
         // Data Soal Arcade
         // Kita menggunakan HTML <sup> untuk jawaban di meteor agar gerakan animasi jatuh sangat mulus dan cepat (tanpa render MathJax di meteor yang jatuh).
@@ -263,83 +264,6 @@
         let arcadeHealth = 3;
         let fallTimeout;
         let activeMeteors = [];
-
-            <div class="glass-panel p-5 rounded-2xl shadow-xl flex justify-between items-center mb-6">
-                <div>
-                    <span class="text-xs text-slate-400 uppercase font-bold block">Status Roket</span>
-                    <span class="text-lg font-bold text-emerald-400" id="gameQuestionStatus">Soal 1 / 4</span>
-                </div>
-                <div class="w-1/2">
-                    <div class="flex justify-between text-xs text-slate-300 mb-1">
-                        <span>Tangki Bahan Bakar</span>
-                        <span id="fuelPercent">0%</span>
-                    </div>
-                    <div class="w-full bg-slate-900 h-4 rounded-full overflow-hidden p-0.5 border border-violet-500/30">
-                        <div id="fuelBar" class="bg-gradient-to-r from-orange-500 to-yellow-400 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                </div>
-                <div class="text-right">
-                    <span class="text-xs text-slate-400 uppercase font-bold block">Total Poin</span>
-                    <span class="text-2xl font-black text-fuchsia-400" id="gameScoreDisplay">0</span>
-                </div>
-            </div>
-
-            <!-- Question Card -->
-            <div id="quizCard" class="glass-panel p-8 md:p-12 rounded-3xl shadow-2xl text-center space-y-6">
-                <h3 class="text-xl md:text-2xl font-bold text-white" id="gameQuestionText">Memuat soal...</h3>
-                <div id="gameOptionsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-                    <!-- Options generated via JS -->
-                </div>
-                <div id="gameFeedbackMessage" class="hidden mt-6 p-4 rounded-xl text-center font-bold text-sm"></div>
-            </div>
-
-            <!-- Final Result Card -->
-            <div id="resultCard" class="hidden glass-panel p-10 rounded-3xl text-center space-y-6 shadow-2xl">
-                <div class="text-7xl float">🌠</div>
-                <h2 class="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-400">Roket Berhasil Mengorbit!</h2>
-                <p class="text-slate-300 max-w-lg mx-auto">Selamat! Kamu telah menguasai sifat-sifat dasar eksponen dan berhasil mengumpulkan energi yang cukup untuk perjalanan antar galaksi.</p>
-                
-                <div class="inline-block bg-slate-900 p-6 rounded-2xl border border-emerald-500/30">
-                    <span class="text-sm text-slate-400 block uppercase tracking-wider mb-2">Nilai Evaluasi Akhir</span>
-                    <span id="finalScore" class="text-6xl font-black text-emerald-400">100</span>
-                </div>
-                
-                <div class="pt-4">
-                    <button onclick="location.reload()" class="px-6 py-3 bg-violet-600 hover:bg-violet-500 rounded-xl font-bold text-white transition">Kembali ke Pangkalan (Ulangi)</button>
-                </div>
-            </div>
-        </div>
-
-    </main>
-
-    <script>
-        // Data Soal Akhir (Game)
-        const mathQuestions = [
-            {
-                q: "Berdasarkan sifat perkalian eksponen, bentuk sederhana dari $$ 2^4 \\times 2^3 $$ adalah...",
-                options: ["$ 2^7 $", "$ 2^{12} $", "$ 4^7 $", "$ 4^{12} $"],
-                correctIndex: 0,
-                explanation: "Pangkatnya ditambahkan: $4 + 3 = 7$."
-            },
-            {
-                q: "Berapakah hasil penyederhanaan dari operasi pembagian berikut? $$ \\frac{5^8}{5^2} $$",
-                options: ["$ 1^6 $", "$ 5^4 $", "$ 5^{10} $", "$ 5^6 $"],
-                correctIndex: 3,
-                explanation: "Pangkatnya dikurangkan: $8 - 2 = 6$."
-            },
-            {
-                q: "Sebuah pesawat ruang angkasa memiliki energi sebesar $ (3^2)^4 $ Joule. Jika disederhanakan, energi tersebut sama dengan...",
-                options: ["$ 3^6 $", "$ 3^8 $", "$ 9^4 $", "$ 6^4 $"],
-                correctIndex: 1,
-                explanation: "Pangkat dipangkatkan, maka dikalikan: $2 \\times 4 = 8$."
-            },
-            {
-                q: "Operasi campuran: Bentuk sederhana dari $$ \\frac{p^3 \\times p^5}{p^2} $$ adalah...",
-                options: ["$ p^6 $", "$ p^4 $", "$ p^{10} $", "$ p^8 $"],
-                correctIndex: 0,
-                explanation: "Jumlahkan dulu yang atas ($3+5=8$), lalu kurangkan dengan yang bawah ($8-2=6$)."
-            }
-        ];
 
         let currentQuestionIdx = 0;
         let studentScore = 0;
@@ -559,5 +483,3 @@
     </script>
 </body>
 </html>
-
-```
